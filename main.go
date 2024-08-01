@@ -1,6 +1,8 @@
 package main
 
-import "renhao_go2/v8go"
+import (
+	"renhao_go2/cobra"
+)
 
 func main() {
 	//rabbit_mq.RabbitMq()
@@ -8,5 +10,6 @@ func main() {
 	//protobuf.Protobuf()
 	//progress_go.ProgressGo()
 	//go_house.GoHouse()
-	v8go.V8go()
+	//v8go.V8go()
+	cobra.Cobra()
 }
