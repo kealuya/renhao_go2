@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package example;
+
+message Person {
+  string name = 1;
+  int32 id = 2;
+  string email = 3;
+  int32 age = 4;
+  string address = 5;
+  int64 phone_number = 6;
+  bool is_active = 7;
+  float height = 8;
+  double weight = 9;
+  string job = 10;
+  string company = 11;
+}
