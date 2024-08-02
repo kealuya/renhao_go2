@@ -1,7 +1,7 @@
 package main
 
 import (
-	"renhao_go2/cobra"
+	"renhao_go2/tray_cmd"
 )
 
 func main() {
@@ -11,5 +11,7 @@ func main() {
 	//progress_go.ProgressGo()
 	//go_house.GoHouse()
 	//v8go.V8go()
-	cobra.Cobra()
+	//cobra.Cobra()
+	//copier.Copier()
+	tray_cmd.TrayCmd()
 }
