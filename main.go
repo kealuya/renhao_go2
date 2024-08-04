@@ -1,6 +1,8 @@
 package main
 
-import "renhao_go2/aggregate"
+import (
+	"renhao_go2/badger"
+)
 
 func main() {
 	//rabbit_mq.RabbitMq()
@@ -13,5 +15,6 @@ func main() {
 	//copier.Copier()
 	//tray_cmd.TrayCmd()
 	//aggregate.FuzzyFind()
-	aggregate.Jwt()
+	//aggregate.Jwt()
+	badger.Badger()
 }
