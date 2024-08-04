@@ -1,8 +1,6 @@
 package main
 
-import (
-	"renhao_go2/tray_cmd"
-)
+import "renhao_go2/aggregate"
 
 func main() {
 	//rabbit_mq.RabbitMq()
@@ -13,5 +11,7 @@ func main() {
 	//v8go.V8go()
 	//cobra.Cobra()
 	//copier.Copier()
-	tray_cmd.TrayCmd()
+	//tray_cmd.TrayCmd()
+	//aggregate.FuzzyFind()
+	aggregate.Jwt()
 }

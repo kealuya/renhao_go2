@@ -5,9 +5,11 @@ go 1.20
 require (
 	github.com/getlantern/systray v1.2.2
 	github.com/gohouse/t v0.0.5
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/golang/protobuf v1.5.0
 	github.com/gookit/goutil v0.6.16
 	github.com/jinzhu/copier v0.4.0
+	github.com/lithammer/fuzzysearch v1.1.8
 	github.com/spf13/cobra v1.8.1
 	github.com/streadway/amqp v1.1.0
 	github.com/vardius/progress-go v0.0.0-20221030221608-f948426036a9
