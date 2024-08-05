@@ -1,12 +1,12 @@
 package main
 
 import (
-	"renhao_go2/goutil"
+	"renhao_go2/go_json"
 )
 
 func main() {
 	//rabbit_mq.RabbitMq()
-	goutil.GoUtil()
+	//go_util.GoUtil()
 	//protobuf.Protobuf()
 	//progress_go.ProgressGo()
 	//go_house.GoHouse()
@@ -17,4 +17,6 @@ func main() {
 	//aggregate.FuzzyFind()
 	//aggregate.Jwt()
 	//badger.Badger()
+	//my_code.Code()
+	go_json.GoJson()
 }

@@ -1,4 +1,4 @@
-package goutil
+package go_util
 
 import (
 	"fmt"
