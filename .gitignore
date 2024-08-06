@@ -1,2 +1,5 @@
 /badger/badger/*
 /badger/badger/
+wails/build/bin
+wails/node_modules
+wails/frontend/dist

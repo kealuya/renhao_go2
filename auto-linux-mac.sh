@@ -25,7 +25,7 @@
 # 设置变量
 PROJECT_NAME="renhao_go2"
 SERVER_ADDR="101.89.144.155"
-SOURCE_DIR="/Users/kealuya/mywork/my_git/info_project/back/$PROJECT_NAME/"  
+SOURCE_DIR="/Users/kealuya/mywork/my_git/$PROJECT_NAME/"
 DEST_DIR="root@$SERVER_ADDR:/root/$PROJECT_NAME"
 PORT=9009
 
@@ -44,19 +44,19 @@ echo "进入目录 /root/${PROJECT_NAME}"
 cd /root/$PROJECT_NAME
 
 echo "停止容器 ${PROJECT_NAME}_service（如果存在）..."
-docker stop $PROJECT_NAME_service || true
+docker stop ${PROJECT_NAME}_service || true
 
 echo "删除容器 ${PROJECT_NAME}_service（如果存在）..."
-docker rm $PROJECT_NAME_service || true
+docker rm ${PROJECT_NAME}_service || true
 
 echo "删除镜像 ${PROJECT_NAME}_image（如果存在）..."
-docker image rm $PROJECT_NAME_image || true
+docker image rm ${PROJECT_NAME}_image || true
 
 echo "构建 Docker 镜像 ${PROJECT_NAME}_image..."
-docker build -t $PROJECT_NAME_image -f ./Dockerfile . || { echo "Docker 镜像构建失败"; exit 1; }
+docker build -t ${PROJECT_NAME}_image -f ./Dockerfile . || { echo "Docker 镜像构建失败"; exit 1; }
 
 echo "运行 Docker 容器 ${PROJECT_NAME}_service..."
-docker run -itd -p $PORT:$PORT --name $PROJECT_NAME_service $PROJECT_NAME_image || { echo "Docker 容器运行失败"; exit 1; }
+docker run -itd -p ${PORT}:${PORT} --name ${PROJECT_NAME}_service ${PROJECT_NAME}_image || { echo "Docker 容器运行失败"; exit 1; }
 
 echo "Docker 容器 ${PROJECT_NAME}_service 运行成功。"
 EOF
