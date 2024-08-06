@@ -40,6 +40,7 @@ require (
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/google/flatbuffers v1.12.1 // indirect
 	github.com/gookit/color v1.5.4 // indirect
+	github.com/gookit/ini/v2 v2.2.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.12.3 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

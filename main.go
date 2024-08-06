@@ -1,12 +1,12 @@
 package main
 
 import (
-	"renhao_go2/go_json"
+	"net/http"
 )
 
 func main() {
 	//rabbit_mq.RabbitMq()
-	//go_util.GoUtil()
+	//goutil.GoUtil()
 	//protobuf.Protobuf()
 	//progress_go.ProgressGo()
 	//go_house.GoHouse()
@@ -17,6 +17,16 @@ func main() {
 	//aggregate.FuzzyFind()
 	//aggregate.Jwt()
 	//badger.Badger()
-	//my_code.Code()
-	go_json.GoJson()
+	//go_config.GoConfig()
+
+	HttpService()
+}
+
+func HttpService() {
+
+	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Write([]byte("hello world"))
+	})
+	http.ListenAndServe(":9006", nil)
+
 }
