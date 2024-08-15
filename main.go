@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"renhao_go2/cgo"
 )
 
 func init() {
@@ -36,9 +37,10 @@ func main() {
 	//aggregate.Jwt()
 	//badger.Badger()
 	//go_config.GoConfig()
+	//LlmChat()
+	cgo.RunCGo()
 	//=====================================
 	//HttpService()
-	LlmChat()
 }
 
 func LlmChat() {
