@@ -1,6 +1,7 @@
 package cobra
 
 import (
+	_ "embed"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
