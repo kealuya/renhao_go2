@@ -1,30 +1,45 @@
 <template>
-  <el-row>
-    <el-col :span="4" style="background-color: aqua;">
-      <div>
-        <img id="logo" alt="Wails logo" src="./assets/images/logo-universal.png"/>
-      </div>
-      <router-link to="/">
-        <div class="grid-content ep-bg-purple">home</div>
-      </router-link>
 
-      <router-link to="/info">
-        <div class="grid-content ep-bg-purple">33333</div>
-      </router-link>
+  <div>
+    <el-row>
+      <el-col :span="8" style="background-color: rgba(25, 48, 80, 1);height: 100vh">
+        <el-row justify="center">
+          <img id="logo" alt="Wails logo" src="./assets/images/logo-universal.png"/>
+        </el-row>
+        <div style="height: 10%"/>
 
-    </el-col>
-    <el-col :span="16">
-      <div class="grid-content ep-bg-purple">
-        <router-view/>
-      </div>
-    </el-col>
-  </el-row>
+        <el-row justify="center">
+          <button @click="go('/')" class="btn-22" style="width: 70%"><span>Home</span></button>
+        </el-row>
+        <el-row justify="center">
+          <button @click="go('/info')" class="btn-22" style="width: 70%"><span>Info</span></button>
+        </el-row>
+      </el-col>
+
+
+      <el-col :span="16">
+        <div class="grid-content ep-bg-purple">
+          <router-view/>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script lang="ts" setup>
+import {useRouter} from 'vue-router'
+
+const router = useRouter()
+let go = (path: string) => {
+  router.push(path)
+}
+
 </script>
 
 <style>
+
+@import 'style/button.css';
+
 #logo {
   display: block;
   width: 70px;
@@ -33,7 +48,6 @@
   padding: 10% 0 0;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
   background-origin: content-box;
 }
 
@@ -47,13 +61,10 @@
 
 .el-col {
   border-radius: 4px;
-  height: 100vh;
 }
 
 .grid-content {
-  border-radius: 4px;
   min-height: 36px;
 }
-
 
 </style>
