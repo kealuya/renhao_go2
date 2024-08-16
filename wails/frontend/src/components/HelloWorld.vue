@@ -6,6 +6,9 @@
       <input id="name" v-model="data.name" autocomplete="off" class="input" type="text"/>
       <button class="btn" @click="greet">Greet</button>
     </div>
+    <div>
+          <el-button style="margin:10px" type="primary">Primary</el-button>
+    </div>
   </main>
 </template>
 
