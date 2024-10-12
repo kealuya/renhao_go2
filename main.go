@@ -1,13 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"github.com/beego/beego/v2/core/logs"
-	"log"
-	"net/http"
-	"os"
-	"os/exec"
-	"renhao_go2/cgo"
 )
 
 func init() {
@@ -38,47 +32,8 @@ func main() {
 	//badger.Badger()
 	//go_config.GoConfig()
 	//LlmChat()
-	cgo.RunCGo()
+	//cgo.RunCGo()
 	//=====================================
 	//HttpService()
-}
-
-func LlmChat() {
-	cmd := exec.Command("./app", "如何改进这些代码")
-	b, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	fmt.Println(string(b))
-}
-
-func HttpService() {
-
-	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-
-		defer func() {
-			if r := recover(); r != nil {
-				fmt.Println(r)
-			}
-		}()
-
-		fmt.Println(request.RequestURI)
-		fmt.Println(request.URL)
-		fmt.Println(request.RemoteAddr)
-
-		_, err := writer.Write([]byte("hello world"))
-		if err != nil {
-			log.Panicln(err)
-		}
-	})
-
-	logs.Info("it's work~!")
-
-	err := http.ListenAndServe(":9009", nil)
-	if err != nil {
-		log.Panicln(err)
-	}
-
+	CoreRun()
 }
