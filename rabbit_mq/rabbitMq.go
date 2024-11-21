@@ -4,3 +4,11 @@ func RabbitMq() {
 	producer()
 	//consumer()
 }
+func consumer() {
+	go deadLetterConsumer()
+	go handlerConsumer()
+	for {
+		select {}
+	}
+
+}

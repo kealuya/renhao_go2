@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/beego/beego/v2/core/logs"
+	"renhao_go2/rabbit_mq"
 )
 
 func init() {
@@ -18,7 +19,7 @@ func LogConfigInit() {
 }
 
 func main() {
-	//rabbit_mq.RabbitMq()
+	rabbit_mq.RabbitMq()
 	//goutil.GoUtil()
 	//protobuf.Protobuf()
 	//progress_go.ProgressGo()
@@ -35,5 +36,7 @@ func main() {
 	//cgo.RunCGo()
 	//=====================================
 	//HttpService()
-	CoreRun()
+	//CoreRun()
+	//darwinkit.GoDarwinkit()
+
 }

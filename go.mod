@@ -14,6 +14,7 @@ require (
 	github.com/gookit/goutil v0.6.16
 	github.com/jinzhu/copier v0.4.0
 	github.com/lithammer/fuzzysearch v1.1.8
+	github.com/progrium/darwinkit v0.5.0
 	github.com/spf13/cobra v1.8.1
 	github.com/streadway/amqp v1.1.0
 	github.com/tidwall/gjson v1.17.3
