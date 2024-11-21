@@ -13,7 +13,7 @@ import (
 // Main
 /*
 	程序建议就是
-	1，初始化：connection，开channel，在mq声明交换机(exchange)，声明路由(routing_key)，然后声明队列(queue)，绑定交换机路由和队列。
+	1，初始化：connection，开channel（channel就是用来作业的基础单位），在mq声明交换机(exchange)，声明路由(routing_key)，然后声明队列(queue)，绑定交换机路由和队列。
 	2，生产者启动：使用channel，进行消息发送，指定交换机和路由（自然也就存储到指定队列中）。
 	3，消费者：使用channel，直接消费对应的队列就可以。（一个goroutine 一个channel）
 	如果初始化已经声明了交换机、路由，并且绑定了路由、交换机，队列，那么消费者其实只需要指定对应名称的队列，就可以消费。
