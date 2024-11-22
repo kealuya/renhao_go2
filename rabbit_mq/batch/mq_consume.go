@@ -118,7 +118,6 @@ func GetMqConsumeInstance(conn *amqp.Connection, p *Product, ctx context.Context
 		exchange:   EXCHANGE,
 		no:         no,
 		queue:      QUEUE,
-		key:        ROUTING_KEY,
 		Connection: conn,
 		Channel:    ch,
 		ctx:        ctx,

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/streadway/amqp"
+	"golang.org/x/time/rate"
 	"strconv"
 	"sync"
 	"time"
@@ -76,7 +77,7 @@ func connectionInit() (*amqp.Connection, error) {
 		return nil, fmt.Errorf("failed to declare a queue: %v", err)
 	}
 
-	//  绑定队列到交换机
+	//  绑定队列到交换机（指定交换机，绑定队列和路由，消费者只需要绑定队列就可以消费了）
 	err = ch.QueueBind(
 		q.Name,      // 队列名
 		ROUTING_KEY, // 路由键
@@ -194,7 +195,11 @@ func Main() {
 	}()
 
 	// 发送生产者消息
+	var limitSystemInit = rate.NewLimiter(rate.Limit(1000), 1)
 	for i := 0; i < 10000; i++ {
+		// 限流
+		_ = limitSystemInit.Wait(context.Background())
+
 		wg.Add(1)
 		err := p.Publish([]byte(strconv.Itoa(i)), 0)
 		if err != nil {

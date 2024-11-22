@@ -59,7 +59,6 @@ func GetMqDeadLetterInstance(conn *amqp.Connection, ctx context.Context) (*DeadL
 	return &DeadLetterConsume{
 		exchange:   DLX_EXCHANGE,
 		queue:      DLX_QUEUE,
-		key:        DLX_ROUTING_KEY,
 		ctx:        ctx,
 		Connection: conn,
 		Channel:    ch,
