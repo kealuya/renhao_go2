@@ -6,7 +6,6 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/gohouse/t"
 	"github.com/streadway/amqp"
-	"log"
 	"sync/atomic"
 )
 
@@ -33,14 +32,14 @@ func (c Consume) Consume(process func([]byte) error) {
 	defer func() {
 		// 按照正确的顺序关闭资源
 		if err := c.Channel.Cancel(tag, false); err != nil {
-			log.Printf("Error canceling consumer: %v", err)
+			logs.Error("Error canceling consumer: %v", err)
 		}
 
 		if err := c.Channel.Close(); err != nil {
-			log.Printf("Error closing channel: %v", err)
+			logs.Error("Error closing channel: %v", err)
 		}
 
-		log.Println(tag + " Successfully closed all AMQP resources")
+		logs.Info(tag + " Successfully closed all AMQP resources")
 	}()
 
 	//   开始消费
@@ -61,11 +60,11 @@ func (c Consume) Consume(process func([]byte) error) {
 	for {
 		select {
 		case <-c.ctx.Done():
-			log.Println(tag + " Consumer shutting down...")
+			logs.Info(tag + " Consumer shutting down...")
 			return
 		case d, ok := <-messages:
 			if !ok {
-				log.Println("Message channel closed", ok)
+				logs.Error("Message channel closed", ok)
 				return
 			}
 
@@ -74,21 +73,19 @@ func (c Consume) Consume(process func([]byte) error) {
 			if d.Headers["retry_count"] != nil {
 				retryCount = t.New(d.Headers["retry_count"]).Int()
 			}
-			// 处理消息（这里模拟处理过程）
-			log.Printf("%s :: Received a message: %s", tag, d.Body)
 			err := process(d.Body)
 			if err != nil {
 				if retryCount >= 3 {
 					// 超过最大重试次数，发送到死信队列
-					logs.Warning("Message failed after %d retries, sending to DLQ", retryCount)
+					logs.Info("Message failed after %d retries, sending to DLQ , %+v", retryCount, string(d.Body))
 					d.Reject(false) // 拒绝消息，不重新入队
 				} else {
 					// 重试逻辑:重试记录+1，重新发回队列等待消费
 					err = c.product.Publish(d.Body, retryCount+1)
 					if err != nil {
-						logs.Error("Failed to publish a message: %v", err)
+						logs.Error("Failed to publish a message: %v , %+v", err, string(d.Body))
 					}
-					fmt.Println(fmt.Sprintf("重新发送 retryCount:%v , body:%v", retryCount+1, string(d.Body)))
+					logs.Info("重新发送 retryCount:%v , body:%v", retryCount+1, string(d.Body))
 					d.Ack(false) // 确认原消息
 				}
 			} else {
@@ -106,7 +103,7 @@ func GetMqConsumeInstance(conn *amqp.Connection, p *Product, ctx context.Context
 	// 因为consume是阻塞，需要go func执行，每一个channel对应一个goroutine
 	ch, _ := conn.Channel()
 	err := ch.Qos(
-		1,     // prefetch count = 1，每次只处理一条消息、预取数量，为了可以让消费者平分
+		10,    // prefetch count = 1，每次只处理一条消息、预取数量，为了可以让消费者平分
 		0,     // prefetch size = 0，不限制消息大小
 		false, // global = false，设置应用于每个消费者
 	)
