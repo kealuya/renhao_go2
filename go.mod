@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/beego/beego/v2 v2.3.0
+	github.com/bytedance/sonic v1.12.4
 	github.com/dgraph-io/badger/v4 v4.2.0
 	github.com/getlantern/systray v1.2.2
 	github.com/go-resty/resty/v2 v2.14.0
@@ -19,12 +20,16 @@ require (
 	github.com/streadway/amqp v1.1.0
 	github.com/tidwall/gjson v1.17.3
 	github.com/vardius/progress-go v0.0.0-20221030221608-f948426036a9
+	golang.org/x/time v0.6.0
 	rogchap.com/v8go v0.9.0
 )
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
+	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
+	github.com/cloudwego/base64x v0.1.4 // indirect
+	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fatih/color v1.14.1 // indirect
@@ -45,6 +50,7 @@ require (
 	github.com/gookit/ini/v2 v2.2.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.12.3 // indirect
+	github.com/klauspost/cpuid/v2 v2.0.9 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -54,8 +60,10 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
+	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	go.opencensus.io v0.22.5 // indirect
+	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect

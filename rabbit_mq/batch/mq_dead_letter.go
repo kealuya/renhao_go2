@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/streadway/amqp"
-	"log"
 )
 
 type DeadLetterConsume struct {
@@ -21,10 +20,10 @@ func (c DeadLetterConsume) Consume(process func([]byte)) {
 	defer func() {
 
 		if err := c.Channel.Close(); err != nil {
-			log.Printf("Error closing channel: %v", err)
+			logs.Error("Error closing channel: %v", err)
 		}
 
-		log.Println("  DeadLetterConsume Successfully closed all AMQP resources")
+		logs.Info("  DeadLetterConsume Successfully closed all AMQP resources")
 	}()
 
 	messages, err := c.Channel.Consume(
@@ -43,11 +42,11 @@ func (c DeadLetterConsume) Consume(process func([]byte)) {
 	for {
 		select {
 		case <-c.ctx.Done():
-			log.Println("DeadLetterConsume" + " Consumer shutting down...")
+			logs.Info("DeadLetterConsume" + " Consumer shutting down...")
 			return
 		case d, ok := <-messages:
 			if !ok {
-				log.Println("DeadLetterConsume"+" Message channel closed", ok)
+				logs.Error("DeadLetterConsume"+" Message channel closed", ok)
 				return
 			}
 			process(d.Body)

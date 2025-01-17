@@ -2,14 +2,15 @@ package batch
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/beego/beego/v2/core/logs"
+	"github.com/bytedance/sonic"
 	"github.com/streadway/amqp"
 	"golang.org/x/time/rate"
-	"strconv"
+	"renhao_go2/common"
+	"runtime"
 	"sync"
-	"time"
+	"sync/atomic"
 )
 
 /*
@@ -37,7 +38,8 @@ const (
 
 // 初始化RabbitMQ连接
 func connectionInit() (*amqp.Connection, error) {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	// 获取响应体
+	conn, err := amqp.Dial("amqp://guest:guest@pilot_rabbitmq:5672/")
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to RabbitMQ: %v", err)
 	}
@@ -137,41 +139,40 @@ func connectionInit() (*amqp.Connection, error) {
 	return conn, nil
 }
 
-func Main() {
+func Main() (bizError error) {
+	// 查看当前 GOMAXPROCS
+	fmt.Printf("Default GOMAXPROCS: %d	", runtime.GOMAXPROCS(0))
 
+	// 设置为CPU核心数
+	runtime.GOMAXPROCS(20)
+
+	fmt.Printf("Current GOMAXPROCS: %d	", runtime.GOMAXPROCS(0))
+	defer common.RecoverHandler(func(err error) {
+		bizError = err
+	})
+
+	// 初始化 sonic 编码器
+	jsonEncoder := sonic.ConfigDefault
 	var wg sync.WaitGroup
 
 	ctx, cancel := context.WithCancel(context.Background())
 
 	conn, err := connectionInit()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	common.ErrorHandler(err)
 
 	// 构造生产者
 	p, err := GetMqProductInstance(conn)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	common.ErrorHandler(err)
 
 	// 构造消费者
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 12; i++ {
 
 		c, err := GetMqConsumeInstance(conn, p, ctx)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+		common.ErrorHandler(err)
 		go func() {
 			c.Consume(func(bytes []byte) error {
-				fmt.Println("handle ::" + string(bytes))
-				time.Sleep(50 * time.Millisecond)
-				// fixme
-				if string(bytes) == "3" {
-					return errors.New("error~~ ::" + string(bytes))
-				}
+
+				// fixme 处理
 				wg.Done()
 				return nil
 			})
@@ -181,38 +182,44 @@ func Main() {
 
 	// 构造死信队列
 	dead, err := GetMqDeadLetterInstance(conn, ctx)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	common.ErrorHandler(err)
 	go func() {
 		dead.Consume(func(bytes []byte) {
-			fmt.Println("dead handle ::" + string(bytes))
 			// 记录死信消息
-			logs.Warning("Dead letter message received: %s", string(bytes))
+			logs.Warning("========Dead letter message received: %s", string(bytes))
 			wg.Done()
 		})
 	}()
 
 	// 发送生产者消息
-	var limitSystemInit = rate.NewLimiter(rate.Limit(1000), 1)
-	for i := 0; i < 10000; i++ {
-		// 限流
-		_ = limitSystemInit.Wait(context.Background())
+	var limitSystemInit = rate.NewLimiter(rate.Limit(12), 5)
+	var count int32 = 0
+	dbHotelArrayChan := getHotelInfoFromDb()
+	for dbHotelArray := range dbHotelArrayChan {
 
-		wg.Add(1)
-		err := p.Publish([]byte(strconv.Itoa(i)), 0)
-		if err != nil {
-			fmt.Println("p.Publishs", err)
-			//return
+		for _, record := range dbHotelArray {
+			// 限流
+			_ = limitSystemInit.Wait(context.Background())
+
+			b, err := jsonEncoder.Marshal(record)
+			if err != nil {
+				logs.Error(fmt.Errorf("批量发送错误::%v , hotelInfo::%+v", err, record))
+			}
+			err = p.Publish(b, 0)
+			if err != nil {
+				logs.Error(fmt.Errorf("批量发送错误::%v , hotelInfo::%+v", err, record))
+			}
+			atomic.AddInt32(&count, 1)
+			wg.Add(1)
 		}
-
 	}
-	fmt.Println("发送完成", 100)
+
+	logs.Info("发送完成：：", count)
 
 	wg.Wait()
 	cancel()
-	fmt.Println("over")
-	time.Sleep(2 * time.Second)
 	p.Close()
+
+	logs.Info("处理完成：：", count)
+	return nil
 }
