@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/beego/beego/v2/core/logs"
-	"renhao_go2/rabbit_mq"
+	"renhao_go2/excel"
 )
 
 func init() {
@@ -19,7 +19,9 @@ func LogConfigInit() {
 }
 
 func main() {
-	rabbit_mq.RabbitMq()
+	//go_open_api.GoOpenApi()
+	excel.Go_excel()
+	//rabbit_mq.RabbitMq()
 	//goutil.GoUtil()
 	//protobuf.Protobuf()
 	//progress_go.ProgressGo()
