@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'basic-list',
         name: 'basic-list',
         meta: {
-          title: '基础列表',
+          title: '基础列表2222',
         },
         component: () => import('@/views/list/basicList/index.vue'),
       },

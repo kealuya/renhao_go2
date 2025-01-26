@@ -5,3 +5,10 @@ wails/node_modules
 wails/frontend/dist
 wails/frontend/.idea
 wails/frontend/package.json.md5
+.idea/material_theme_project_new.xml
+.idea/modules.xml
+.idea/renhao_go2.iml
+.idea/vcs.xml
+logs/my.2024-11-19.001.log
+logs/my.2024-11-20.002.log
+logs/my.2024-11-21.003.log
