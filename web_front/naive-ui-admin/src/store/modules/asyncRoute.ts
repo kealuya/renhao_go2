@@ -86,6 +86,13 @@ export const useAsyncRouteStore = defineStore({
       // 设置需要缓存的组件
       this.keepAliveComponents = compNames;
     },
+
+    /*
+      renhao
+      首先通过【asyncRoutes】（通过vite自动导入了router的modules下的所有路由）获取了系统的所有路由，然后记录路由中哪些页面需要权限，
+      然后判断这个用户是否具有这几个有权限的页面的权限，
+      如果没有权限，就把这几个页面在路由数组中过滤掉。然后剩下的路由权限就是用户可以访问的路由。
+    */
     async generateRoutes(data) {
       let accessedRouters;
       const permissionsList = data.permissions ?? [];
@@ -96,6 +103,7 @@ export const useAsyncRouteStore = defineStore({
         return permissionsList.some((item) => permissions.includes(item.value));
       };
       const { permissionMode } = useProjectSetting();
+      // renhao  //菜单权限模式 FIXED 前端固定路由  BACK 动态获取  
       if (unref(permissionMode) === 'BACK') {
         // 动态获取菜单
         try {

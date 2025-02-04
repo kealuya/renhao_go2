@@ -1,13 +1,17 @@
 <template>
+  <!-- 登录页面主容器 -->
   <div class="view-account">
     <div class="view-account-header"></div>
     <div class="view-account-container">
+      <!-- 顶部 Logo 和描述区域 -->
       <div class="view-account-top">
         <div class="view-account-top-logo">
           <img :src="websiteConfig.loginImage" alt="" />
         </div>
         <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div>
       </div>
+      
+      <!-- 登录表单区域 -->
       <div class="view-account-form">
         <n-form
           ref="formRef"
@@ -16,6 +20,7 @@
           :model="formInline"
           :rules="rules"
         >
+          <!-- 用户名输入框 -->
           <n-form-item path="username">
             <n-input v-model:value="formInline.username" placeholder="请输入用户名">
               <template #prefix>
@@ -25,11 +30,13 @@
               </template>
             </n-input>
           </n-form-item>
+
+          <!-- 密码输入框 -->
           <n-form-item path="password">
             <n-input
               v-model:value="formInline.password"
               type="password"
-              showPasswordOn="click"
+              showPasswordOn="mousedown"
               placeholder="请输入密码"
             >
               <template #prefix>
@@ -39,6 +46,8 @@
               </template>
             </n-input>
           </n-form-item>
+
+          <!-- 自动登录和忘记密码选项 -->
           <n-form-item class="default-color">
             <div class="flex justify-between">
               <div class="flex-initial">
@@ -49,13 +58,17 @@
               </div>
             </div>
           </n-form-item>
+
+          <!-- 登录按钮 -->
           <n-form-item>
             <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
               登录
             </n-button>
           </n-form-item>
+
+          <!-- 其他登录方式 -->
           <n-form-item class="default-color">
-            <div class="flex view-account-other">
+            <div class="flex view-  -other">
               <div class="flex-initial">
                 <span>其它登录方式</span>
               </div>
@@ -85,6 +98,7 @@
 </template>
 
 <script lang="ts" setup>
+  // 导入所需的组件和工具
   import { reactive, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { useUserStore } from '@/store/modules/user';
@@ -93,37 +107,45 @@
   import { PersonOutline, LockClosedOutline, LogoGithub, LogoFacebook } from '@vicons/ionicons5';
   import { PageEnum } from '@/enums/pageEnum';
   import { websiteConfig } from '@/config/website.config';
+
+  // 定义表单数据接口
   interface FormState {
     username: string;
     password: string;
   }
 
-  const formRef = ref();
-  const message = useMessage();
-  const loading = ref(false);
-  const autoLogin = ref(true);
+  // 初始化表单引用和其他响应式变量
+  const formRef = ref(); // 表单引用
+  const message = useMessage(); // 消息提示
+  const loading = ref(false); // 加载状态
+  const autoLogin = ref(true); // 自动登录选项
   const LOGIN_NAME = PageEnum.BASE_LOGIN_NAME;
 
+  // 表单数据对象
   const formInline = reactive({
-    username: 'admin',
-    password: '123456',
-    isCaptcha: true,
+    username: 'admin', // 默认用户名
+    password: '123456', // 默认密码
+    isCaptcha: true, // 是否需要验证码
   });
 
+  // 表单验证规则
   const rules = {
     username: { required: true, message: '请输入用户名', trigger: 'blur' },
     password: { required: true, message: '请输入密码', trigger: 'blur' },
   };
 
+  // 获取用户存储实例和路由实例
   const userStore = useUserStore();
-
   const router = useRouter();
   const route = useRoute();
 
+  // 表单提交处理函数
   const handleSubmit = (e) => {
     e.preventDefault();
+    // 表单验证
     formRef.value.validate(async (errors) => {
       if (!errors) {
+        // 获取表单数据
         const { username, password } = formInline;
         message.loading('登录中...');
         loading.value = true;
@@ -134,21 +156,27 @@
         };
 
         try {
+          // 调用登录接口
+          // 使用解构赋值，并重命名 message 为 msg！！
           const { code, message: msg } = await userStore.login(params);
           message.destroyAll();
           if (code == ResultEnum.SUCCESS) {
+            // 登录成功处理
             const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
             message.success('登录成功，即将进入系统');
+            // 路由跳转
             if (route.name === LOGIN_NAME) {
               router.replace('/');
             } else router.replace(toPath);
           } else {
+            // 登录失败处理
             message.info(msg || '登录失败');
           }
         } finally {
           loading.value = false;
         }
       } else {
+        // 表单验证失败提示
         message.error('请填写完整信息，并且进行验证码校验');
       }
     });
@@ -156,6 +184,7 @@
 </script>
 
 <style lang="less" scoped>
+  // 登录页面样式
   .view-account {
     display: flex;
     flex-direction: column;

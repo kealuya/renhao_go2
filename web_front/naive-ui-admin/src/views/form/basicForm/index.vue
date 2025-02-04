@@ -81,11 +81,24 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<!-- <script lang="ts">
+  用 defineOptions 替代
+  /* renhao
+    追加单页面缓存功能：
+   开启缓存有 3 个条件
+    1. 在router中meta内将keepAlive 设置为 true
+    2. 路由设置 name，且不能重复
+    3. 路由对应的组件加上 name，与路由设置的 name 保持一致
+  */
+  export default { name: 'form-basic-form' };
+</script> -->
+<script lang="ts" setup >
   import { ref, unref, reactive } from 'vue';
   import { useMessage } from 'naive-ui';
   import { BasicUpload } from '@/components/Upload';
   import { useGlobSetting } from '@/hooks/setting';
+
+  defineOptions({ name: 'form-basic-form' });
 
   const globSetting = useGlobSetting();
 

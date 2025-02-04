@@ -20,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
         name: 'form-basic-form',
         meta: {
           title: '基础表单',
+          keepAlive: true,
         },
         component: () => import('@/views/form/basicForm/index.vue'),
       },
