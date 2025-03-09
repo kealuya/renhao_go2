@@ -1,8 +1,9 @@
 package main
 
 import (
+	goproxyrequest "renhao_go2/go_proxy_request"
+
 	"github.com/beego/beego/v2/core/logs"
-	"renhao_go2/excel"
 )
 
 func init() {
@@ -19,8 +20,9 @@ func LogConfigInit() {
 }
 
 func main() {
+	goproxyrequest.GoProxyRequest()
 	//go_open_api.GoOpenApi()
-	excel.Go_excel()
+	// excel.Go_excel()
 	//rabbit_mq.RabbitMq()
 	//goutil.GoUtil()
 	//protobuf.Protobuf()
