@@ -37,7 +37,7 @@ func tongjijiaban() {
 	summaryMap := make(map[string]*Employee)
 
 	// 指定要处理的文件夹路径
-	folderPath := "/Users/kealuya/办公/办公文稿/2024浩天教育考勤/自动化/jiaban/" // 根据实际情况修改路径
+	folderPath := "/Users/kealuya/工作文稿/办公文稿/2024浩天教育考勤/自动化/jiaban/" // 根据实际情况修改路径
 
 	// 遍历文件夹下的所有Excel文件
 	err := filepath.Walk(folderPath, func(path string, info os.FileInfo, err error) error {
@@ -148,11 +148,11 @@ func tongjiQingjia() {
 	summaryMap := make(map[string]map[int]string)
 
 	// 指定要处理的文件夹路径
-	folderPath := "/Users/kealuya/办公/办公文稿/2024浩天教育考勤/自动化/qingjia/" // 根据实际情况修改路径
+	folderPath := "/Users/kealuya/工作文稿/办公文稿/2024浩天教育考勤/自动化/qingjia/" // 根据实际情况修改路径
 
 	// 处理每个月份的文件
 	for month := 1; month <= 12; month++ {
-		fileName := fmt.Sprintf("考勤工作表2024年%d月_公式.xlsx", month)
+		fileName := fmt.Sprintf("考勤工作表2025年%d月_公式.xlsx", month)
 		filePath := filepath.Join(folderPath, fileName)
 
 		// 检查文件是否存在
@@ -240,7 +240,7 @@ func createQingjiaSummaryExcel(summaryMap map[string]map[int]string) error {
 	}
 
 	// 保存文件
-	if err := f.SaveAs("/Users/kealuya/办公/办公文稿/2024浩天教育考勤/自动化/qingjia/请假汇总结果.xlsx"); err != nil {
+	if err := f.SaveAs("/Users/kealuya/工作文稿/办公文稿/2024浩天教育考勤/自动化/qingjia/请假汇总结果.xlsx"); err != nil {
 		return fmt.Errorf("保存请假汇总文件失败: %v", err)
 	}
 
@@ -250,7 +250,7 @@ func createQingjiaSummaryExcel(summaryMap map[string]map[int]string) error {
 // GeneratePerformanceReviews 生成绩效考评确认书
 func GeneratePerformanceReviews() error {
 	// 打开Excel文件
-	f, err := excelize.OpenFile("/Users/kealuya/办公/办公文稿/2024浩天教育考勤/自动化/绩效确认书/浩天教育2024_人员评价表.xlsx")
+	f, err := excelize.OpenFile("/Users/kealuya/工作文稿/办公文稿/2024浩天教育考勤/自动化/绩效确认书/浩天教育2025一季度_人员评价表.xlsx")
 	if err != nil {
 		return fmt.Errorf("打开Excel文件失败: %v", err)
 	}
@@ -299,8 +299,8 @@ func parseFloat(s string) float64 {
 
 // generateWordDocument 根据模板生成Word文档
 func generateWordDocument(emp Employee) error {
-	templatePath := "/Users/kealuya/办公/办公文稿/2024浩天教育考勤/自动化/绩效确认书/绩效考评确认书-模板.docx"
-	outputPath := fmt.Sprintf("/Users/kealuya/办公/办公文稿/2024浩天教育考勤/自动化/绩效确认书/output/%s-绩效考评确认书.docx", emp.Name)
+	templatePath := "/Users/kealuya/工作文稿/办公文稿/2024浩天教育考勤/自动化/绩效确认书/绩效考评确认书-模板.docx"
+	outputPath := fmt.Sprintf("/Users/kealuya/工作文稿/办公文稿/2024浩天教育考勤/自动化/绩效确认书/output/%s-绩效考评确认书.docx", emp.Name)
 
 	// 读取模板文件
 	r, err := docx.ReadDocxFile(templatePath)

@@ -3,10 +3,11 @@ package batch
 import (
 	"context"
 	"fmt"
+	"sync/atomic"
+
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/gohouse/t"
 	"github.com/streadway/amqp"
-	"sync/atomic"
 )
 
 type Consume struct {
@@ -16,8 +17,9 @@ type Consume struct {
 	queue      string
 	Connection *amqp.Connection
 	Channel    *amqp.Channel
-	product    *Product
-	ctx        context.Context
+	// 获取生产者是为了通过生产者发送死信队列（不需要死信队列的话，消费者是不需要生产者引用的）
+	product *Product
+	ctx     context.Context
 }
 
 //	func (c Consume) Close() {
